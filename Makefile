@@ -14,7 +14,7 @@ SANITIZED_FLAGS = $(DEBUG_FLAGS) -fsanitize=address,undefined,leak
 RELEASE_FLAGS = $(DEBUG_FLAGS) -O3
 
 
-all: release
+all: debug sanitized release
 debug: $(DEBUG_DIR)/main
 	./$(DEBUG_DIR)/main
 sanitized: $(SANITIZED_DIR)/main
