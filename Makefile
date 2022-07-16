@@ -16,11 +16,8 @@ RELEASE_FLAGS = $(DEBUG_FLAGS) -O3
 
 all: debug sanitized release
 debug: $(DEBUG_DIR)/main
-	./$(DEBUG_DIR)/main
 sanitized: $(SANITIZED_DIR)/main
-	./$(SANITIZED_DIR)/main
 release: $(RELEASE_DIR)/main
-	./$(RELEASE_DIR)/main
 
 #dirs
 debug_dir:
