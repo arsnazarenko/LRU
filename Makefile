@@ -15,9 +15,9 @@ RELEASE_FLAGS = $(DEBUG_FLAGS) -O3
 
 
 all: debug sanitized release
-debug: $(DEBUG_DIR)/main
-sanitized: $(SANITIZED_DIR)/main
-release: $(RELEASE_DIR)/main
+debug: debug_dir $(DEBUG_DIR)/main
+sanitized: sanitized_dir $(SANITIZED_DIR)/main
+release: release_dir $(RELEASE_DIR)/main
 
 #dirs
 debug_dir:
@@ -29,32 +29,29 @@ sanitized_dir:
 release_dir:
 	mkdir -p $(RELEASE_DIR)/obj
 
-
-
 # object files
-$(DEBUG_DIR)/obj/%.o: $(SOURCE_DIR)/%.cpp debug_dir
+$(DEBUG_DIR)/obj/%.o: $(SOURCE_DIR)/%.cpp
 	$(CXX) -c $(DEBUG_FLAGS) $< -o $@
 
-$(SANITIZED_DIR)/obj/%.o: $(SOURCE_DIR)/%.cpp sanitized_dir
+$(SANITIZED_DIR)/obj/%.o: $(SOURCE_DIR)/%.cpp
 	$(CXX) -c $(SANITIZED_FLAGS) $< -o $@
 
-$(RELEASE_DIR)/obj/%.o: $(SOURCE_DIR)/%.cpp release_dir
+$(RELEASE_DIR)/obj/%.o: $(SOURCE_DIR)/%.cpp
 	$(CXX) -c $(RELEASE_FLAGS) $< -o $@
 
 
 # executable files
 $(DEBUG_DIR)/main: $(patsubst %.o, $(DEBUG_DIR)/obj/%.o, $(OBJS))
-	$(CXX) $(DEBUG_FLAGS) $^ -o $@
+	$(CXX) $(DEBUG_FLAGS) -lpthread  $^ -o $@
 
 $(SANITIZED_DIR)/main: $(patsubst %.o, $(SANITIZED_DIR)/obj/%.o, $(OBJS)) 
-	$(CXX) $(SANITIZED_FLAGS) $^ -o $@
+	$(CXX) $(SANITIZED_FLAGS) -lpthread $^ -o $@
 
 $(RELEASE_DIR)/main: $(patsubst %.o, $(RELEASE_DIR)/obj/%.o, $(OBJS))
-	$(CXX) $(RELEASE_FLAGS) $^ -o $@
+	$(CXX) $(RELEASE_FLAGS) -lpthread $^ -o $@
 
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: clean debug sanitized release
-
+.PHONY: clean debug_dir sanitized_dir release_dir
 
