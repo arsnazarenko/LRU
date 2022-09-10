@@ -50,6 +50,11 @@ $(SANITIZED_DIR)/main: $(patsubst %.o, $(SANITIZED_DIR)/obj/%.o, $(OBJS))
 $(RELEASE_DIR)/main: $(patsubst %.o, $(RELEASE_DIR)/obj/%.o, $(OBJS))
 	$(CXX) $(RELEASE_FLAGS) -lpthread $^ -o $@
 
+# clang-tide
+
+clang-tidy:
+	clang-tidy $(SOURCE_DIR)/*.cpp -checks=-*,clang-analyzer-*,-clang-analyzer-cplusplus* -- $(SANITIZED_FLAGS)
+
 clean:
 	rm -rf $(BUILD_DIR)
 
